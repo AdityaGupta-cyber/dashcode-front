@@ -1,13 +1,13 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Plus, X, Edit } from "lucide-react";
-import { 
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+// import { 
+//   Form,
+//   FormControl,
+//   FormDescription,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+// } from "@/components/ui/form";
 import { useState } from "react";
 
 import { useConfig } from "./contexts/ConfigContext";
@@ -19,7 +19,7 @@ import { Card } from "./ui/card";import { CardContent } from "./ui/card";
 
 const AdvancedPanel = () => {
   const { config, updateConfig, addCustomField, updateCustomField, removeCustomField } = useConfig();
-  const [editingField, setEditingField] = useState<string | null>(null);
+  const [editingField, setEditingField] = useState(null);
 
   return (
     <Card>
@@ -68,7 +68,7 @@ const AdvancedPanel = () => {
                               value={field.type}
                               onValueChange={(value) => updateCustomField(
                                 field.id, 
-                                { type: value as "text" | "email" | "number" | "phone" | "url" }
+                                { type: value }
                               )}
                             >
                               <SelectTrigger id={`${field.id}-type`}>
@@ -262,7 +262,7 @@ const AdvancedPanel = () => {
               <Select 
                 value={config.progressUpdateFrequency} 
                 onValueChange={(value) => updateConfig({ 
-                  progressUpdateFrequency: value as "daily" | "weekly" | "monthly" 
+                  progressUpdateFrequency: value 
                 })}
               >
                 <SelectTrigger className="w-full">

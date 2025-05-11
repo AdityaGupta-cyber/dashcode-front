@@ -11,11 +11,11 @@ const WidgetPreview = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
-  const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
+  const [customFieldValues, setCustomFieldValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [showReferral, setShowReferral] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (email) {
       if (config.enableReferrals) {
@@ -26,7 +26,7 @@ const WidgetPreview = () => {
     }
   };
 
-  const handleCustomFieldChange = (fieldId: string, value: string) => {
+  const handleCustomFieldChange = (fieldId, value) => {
     setCustomFieldValues(prev => ({
       ...prev,
       [fieldId]: value
@@ -185,16 +185,20 @@ const WidgetPreview = () => {
                     backgroundColor: config.buttonBGColor
                   }}
                 >
-                  W
+                  A
                 </div>
               )}
             </div>
           )}
           
           {config.title && (
-            <h2 className="text-xl font-semibold text-center" style={{ color: config.signupTextColor }}>
-              {config.title}
-            </h2>
+         <h2
+         className="text-xl font-semibold text-center mb-3 break-words"
+         style={{ color: config.signupTextColor }}
+       >
+         {config.title}
+       </h2>
+       
           )}
           
           {config.showCountdown && (
