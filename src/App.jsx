@@ -103,6 +103,7 @@ const TodoPage = lazy(() => import("./pages/app/todo"));
 const EmailPage = lazy(() => import("./pages/app/email"));
 const ChatPage = lazy(() => import("./pages/app/chat"));
 const ProjectPostPage = lazy(() => import("./pages/app/projects"));
+const WaitlistBuilder = lazy(() => import("./pages/app/builder"));
 const ProjectDetailsPage = lazy(() =>
   import("./pages/app/projects/project-details")
 );
@@ -126,6 +127,7 @@ import Customers from "./pages/ecommerce/customers";
 import Sellers from "./pages/ecommerce/sellers";
 import AddProduct from "./pages/ecommerce/add-product";
 import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
+import WaitlistListPage from "./pages/app/projects/WaitlistList"; 
 
 function App() {
   return (
@@ -156,10 +158,12 @@ function App() {
           <Route path="email" element={<EmailPage />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="projects" element={<ProjectPostPage />} />
+          {/* /projects/waitlistId*/}
           <Route path={"projects/:id"} element={<ProjectDetailsPage />} />
           <Route path="project-details" element={<ProjectDetailsPage />} />
           <Route path="kanban" element={<KanbanPage />} />
           <Route path="calender" element={<CalenderPage />} />
+          <Route path={"projects/:id/waitlist/:waitlistId"} element={<WaitlistBuilder />} />
           {/* Components pages */}
           <Route path="button" element={<Button />} />
           <Route path="dropdown" element={<Dropdown />} />
