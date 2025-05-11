@@ -128,6 +128,7 @@ import Sellers from "./pages/ecommerce/sellers";
 import AddProduct from "./pages/ecommerce/add-product";
 import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
 import WaitlistListPage from "./pages/app/projects/WaitlistList"; 
+import Builder from "./pages/builder";
 
 function App() {
   return (
@@ -230,6 +231,7 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="sellers" element={<Sellers />} />
           <Route path="invoice-ecommerce" element={<InvoiceEPage />} />
+          <Route path="builder" element={<Builder />} />
 
           <Route path="*" element={<Navigate to="/404" />} />
         </Route>
