@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ConfigPanel from "@/components/waitlist-builder/ConfigPanel"
 import WidgetPreview from "@/components/waitlist-builder/WidgetPreview"
@@ -14,7 +13,7 @@ function WaitlistBuilder() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
             <div className="flex flex-col">
               <h2 className="text-lg font-medium text-gray-700 mb-4">Preview</h2>
-              <Card className="flex-1 p-4 md:p-6 flex items-center justify-center">
+              <Card className="flex-1 p-4 md:p-6 flex items-center justify-center bg-white">
                 <WidgetPreview />
               </Card>
               
@@ -32,7 +31,9 @@ function WaitlistBuilder() {
             
             <div className="flex flex-col">
               <h2 className="text-lg font-medium text-gray-700 mb-4">Configuration</h2>
-              <ConfigPanel />
+              <Card className="flex-1 p-4 md:p-6 bg-white">
+                <ConfigPanel onShowEmbed={() => setShowEmbedCode(true)} />
+              </Card>
             </div>
           </div>
         </ConfigProvider>

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface FormField {
@@ -54,6 +53,13 @@ interface Config {
   collectCompany: boolean;
   // Custom form fields
   customFields: FormField[];
+  // New fields for title and description styling
+  titleColor: string;
+  titleSize: string;
+  titleBold: boolean;
+  description: string;
+  descriptionColor: string;
+  descriptionBold: boolean;
 }
 
 interface ConfigContextType {
@@ -112,6 +118,13 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     collectCompany: false,
     // Custom form fields
     customFields: [],
+    // New defaults for title and description styling
+    titleColor: "#0A0A0A",
+    titleSize: "3xl",
+    titleBold: true,
+    description: "Updates, news, exclusive discounts, and so much more cool stuff happens behind-the-scenes",
+    descriptionColor: "#6B7280",
+    descriptionBold: false,
   });
 
   const updateConfig = (updates: Partial<Config>) => {
