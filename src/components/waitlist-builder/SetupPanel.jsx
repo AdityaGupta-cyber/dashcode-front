@@ -176,7 +176,7 @@ const SetupPanel = () => {
                 <Select
                   value={config.progressUpdateFrequency}
                   onValueChange={(value) => updateConfig({ 
-                    progressUpdateFrequency: value as "daily" | "weekly" | "monthly"
+                    progressUpdateFrequency: value 
                   })}
                 >
                   <SelectTrigger id="progressUpdateFrequency">

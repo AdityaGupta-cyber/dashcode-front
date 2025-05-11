@@ -57,7 +57,7 @@ const ThemesPanel = () => {
     }
   ];
   
-  const applyTheme = (theme: any) => {
+  const applyTheme = (theme) => {
     updateConfig({ ...theme.colors });
   };
   
@@ -86,7 +86,7 @@ const ThemesPanel = () => {
                       <div
                         key={i}
                         className="w-4 h-4 rounded-full border"
-                        style={{ backgroundColor: color as string }}
+                        style={{ backgroundColor: color }}
                       ></div>
                     ))}
                   </div>
