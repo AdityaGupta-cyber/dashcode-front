@@ -25,7 +25,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (!isAuth || !user) {
-      navigate("/");
+      // navigate("/");
     }
   }, [isAuth, navigate]);
   const switchHeaderClass = () => {
