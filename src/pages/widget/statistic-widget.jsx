@@ -4,7 +4,7 @@ import GroupChart5 from "@/components/partials/widget/chart/group-chart5";
 import GroupChart3 from "@/components/partials/widget/chart/group-chart-3";
 import GroupChart4 from "@/components/partials/widget/chart/group-chart-4";
 import GroupChart2 from "@/components/partials/widget/chart/group-chart-2";
-import GroupChart1 from "@/components/partials/widget/chart/group-chart-1";
+import MainStats from "@/components/partials/widget/chart/group-chart-1";
 import DonutChart2 from "@/components/partials/widget/chart/dount-chart2";
 import OrderChart from "@/components/partials/widget/chart/order-chart";
 import ProfitChart from "@/components/partials/widget/chart/profit-chart";
@@ -19,7 +19,7 @@ const StatisticWidget = () => {
         <GroupChart2 />
       </div>
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-        <GroupChart1 />
+        <MainStats />
       </div>
       <Card>
         <div className="grid xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-5 place-content-center">

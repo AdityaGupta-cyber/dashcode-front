@@ -223,7 +223,7 @@ const statistics = [
     bg: "bg-[#EAE5FF] dark:bg-slate-900	",
   },
 ];
-const GroupChart1 = () => {
+const MainStats = () => {
   return (
     <>
       {statistics.map((item, i) => (
@@ -253,4 +253,4 @@ const GroupChart1 = () => {
   );
 };
 
-export default GroupChart1;
+export default MainStats;

@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useSaveWaitlistConfigMutation } from "@/store/api/waitlist/waitlistApiSlice";
+import { saveWaitlistConfig } from "@/store/api/waitlist/waitlistSlice";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface FormField {
   id: string;
@@ -15,6 +18,7 @@ interface Config {
   successMessage: string;
   showLogo: boolean;
   logoSize: number;
+  logoBorderRadius: string;
   showSocialProof: boolean;
   enableReferrals: boolean;
   whiteLabel: boolean;
@@ -68,18 +72,26 @@ interface ConfigContextType {
   addCustomField: () => void;
   updateCustomField: (id: string, updates: Partial<FormField>) => void;
   removeCustomField: (id: string) => void;
+  saveConfig: () => void;
 }
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
 
-export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [config, setConfig] = useState<Config>({
+export const ConfigProvider: React.FC<{ children: ReactNode; }> = ({ 
+  children, 
+}) => {
+  const dispatch = useDispatch();
+  // Get saved config from Redux if available
+  const savedConfig = useSelector((state: any) => state.waitlist.config);
+  console.log(`savedConfig: ${JSON.stringify(savedConfig,null,2)}`);
+  const [config, setConfig] = useState<Config>(savedConfig || {
     title: "Join our waitlist",
     placeholderText: "Email",
     buttonText: "Join the waitlist",
     successMessage: "Success! You're on the waitlist 🎉",
     showLogo: true,
     logoSize: 1,
+    logoBorderRadius: "0.5rem",
     showSocialProof: true,
     enableReferrals: false,
     whiteLabel: false,
@@ -125,8 +137,21 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     description: "Updates, news, exclusive discounts, and so much more cool stuff happens behind-the-scenes",
     descriptionColor: "#6B7280",
     descriptionBold: false,
+    // Override with saved values if available
+    ...(savedConfig || {}),
   });
 
+  // Update config when initialConfig or savedConfig changes
+  useEffect(() => {
+    if (savedConfig || Object.keys(config).length > 0) {
+      setConfig(prevConfig => ({
+        ...prevConfig,
+        ...(savedConfig || {}),
+      }));
+    }
+  }, [savedConfig]);
+
+  const [saveWaitlistConfigToApi, {isLoading, error}] = useSaveWaitlistConfigMutation();
   const updateConfig = (updates: Partial<Config>) => {
     setConfig((prev) => ({ ...prev, ...updates }));
   };
@@ -164,10 +189,36 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       customFields: prev.customFields.filter((field) => field.id !== id),
     }));
   };
+  
+  const saveConfig = async () => {
+    // Make sure we have the current config with any pending changes
+    const currentConfig = config;
+    
+    // Save to Redux store
+    dispatch(saveWaitlistConfig(currentConfig));
+    console.log(currentConfig);
 
+    // Save to API
+    const response = await saveWaitlistConfigToApi(currentConfig);
+    console.log(`response from backend: ${JSON.stringify(response,null,2)}`);
+    
+    // Save to localStorage as a fallback
+    try {
+      if (currentConfig.id) {
+        localStorage.setItem(`waitlist_${currentConfig.id}`, JSON.stringify(currentConfig));
+      } else {
+        localStorage.setItem('waitlist_default', JSON.stringify(currentConfig));
+      }
+    } catch (e) {
+      console.error('Failed to save config to localStorage', e);
+    }
+    
+    return response;
+  }
+  
   return (
     <ConfigContext.Provider 
-      value={{ config, updateConfig, addCustomField, updateCustomField, removeCustomField }}
+      value={{ config, updateConfig, addCustomField, updateCustomField, removeCustomField, saveConfig }}
     >
       {children}
     </ConfigContext.Provider>
