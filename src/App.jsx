@@ -129,6 +129,7 @@ import AddProduct from "./pages/ecommerce/add-product";
 import InvoiceEPage from "./pages/ecommerce/invoice-ecompage";
 import WaitlistListPage from "./pages/app/projects/WaitlistList"; 
 import Builder from "./pages/builder";
+import HostedPreview from "./components/waitlist-builder/HostedPreview";
 
 function App() {
   return (
@@ -165,6 +166,8 @@ function App() {
           <Route path="kanban" element={<KanbanPage />} />
           <Route path="calender" element={<CalenderPage />} />
           <Route path={"projects/:id/waitlist/:waitlistId"} element={<WaitlistBuilder />} />
+          {/* //Final Preview */}
+          <Route path={"waitlist/:waitlistId"} element={<HostedPreview />} />
           {/* Components pages */}
           <Route path="button" element={<Button />} />
           <Route path="dropdown" element={<Dropdown />} />

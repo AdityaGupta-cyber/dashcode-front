@@ -212,7 +212,7 @@ const ProjectDetailsPage = () => {
     //     </div>
     //   </div>
     // </div>
-    <div className="space y-5">
+    <div className="space y-5 flex flex-col gap-5">
       {projects.map((project, projectIndex) => (
         console.log(`project`, project),
             <WaitlistListPage project={project} key={projectIndex} />

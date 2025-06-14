@@ -1,13 +1,16 @@
-import { useConfig } from "./contexts/ConfigContext";
-// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import React from 'react';
+import { ConfigProvider, useConfig } from "./contexts/ConfigContext";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Zap, TrendingUp, Check, Upload, Heart } from "lucide-react";
-import { useState } from "react";
+import { TrendingUp, Check, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Progress } from "./ui/progress";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchWaitlistConfigById } from "@/store/api/waitlist/waitlistSlice";
 
-// Sample people data for the social proof
+// Sample people data for the social proof (same as WidgetPreview)
 const people = [
   {
     id: 1,
@@ -31,7 +34,7 @@ const people = [
   },
 ];
 
-const WidgetPreview = () => {
+function Preview() {
   const { config } = useConfig();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -39,7 +42,7 @@ const WidgetPreview = () => {
   const [customFieldValues, setCustomFieldValues] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [showReferral, setShowReferral] = useState(false);
-  console.log(`buttonBGColor: ${config.buttonBGColor}                                                    `)
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email) {
@@ -64,26 +67,10 @@ const WidgetPreview = () => {
     setShowReferral(false);
   };
 
-  const resetForm = () => {
-    setSubmitted(false);
-    setShowReferral(false);
-    setEmail("");
-    setName("");
-    setCompany("");
-    setCustomFieldValues({});
-  };
-
-  const avatars = [
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg"
-  ];
-
   // Calculate position percentage for progress bar
   const positionPercentage = (config.currentPosition / config.totalSignups) * 100;
 
-  // Create a container style that ensures the widget is properly sized and centered
+  // Container and widget styles (same as WidgetPreview)
   const containerStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -94,7 +81,6 @@ const WidgetPreview = () => {
     boxSizing: 'border-box'
   };
 
-  // Create a widget style that sets a fixed width and height
   const widgetStyle = {
     width: '380px',
     maxWidth: '100%',
@@ -120,9 +106,7 @@ const WidgetPreview = () => {
 
   return (
     <div style={containerStyle}>
-      <div 
-        style={{...widgetStyle, ...backgroundStyle}}
-      >
+      <div style={{...widgetStyle, ...backgroundStyle}}>
         <div className="p-8 flex-1 flex flex-col ">
           {submitted ? (
             <div className="text-center py-8 flex-1 flex flex-col items-center justify-center">
@@ -153,13 +137,6 @@ const WidgetPreview = () => {
                   )}
                 </div>
               )}
-              
-              <button 
-                className="text-blue-500 hover:text-blue-700 text-sm mt-6"
-                onClick={resetForm}
-              >
-                Reset demo
-              </button>
             </div>
           ) : showReferral ? (
             <div className="space-y-6 p-6 border rounded-lg flex-1 flex flex-col" style={{ backgroundColor: config.refBackgroundColor }}>
@@ -201,13 +178,6 @@ const WidgetPreview = () => {
                   Copy
                 </Button>
               </div>
-              
-              <button 
-                className="text-blue-500 hover:text-blue-700 text-sm mt-auto self-center"
-                onClick={resetForm}
-              >
-                Reset demo
-              </button>
             </div>
           ) : (
             <div className="space-y-6 flex-1 flex flex-col">
@@ -225,7 +195,7 @@ const WidgetPreview = () => {
                     <img 
                       src={config.logoUrl} 
                       alt="Logo" 
-                      className="h-full w-full  flex items-center justify-center object-cover" 
+                      className="h-full w-full flex items-center justify-center object-cover" 
                       style={{ 
                         borderRadius: config.logoBorderRadius
                       }}
@@ -379,6 +349,36 @@ const WidgetPreview = () => {
       </div>
     </div>
   );
-};
+}
 
-export default WidgetPreview;
+export default function HostedPreview() {
+    // Get the waitlistId from URL params
+    const { waitlistId } = useParams();
+    // Get the saved waitlist config from Redux store
+    const savedConfig = useSelector(state => state.waitlist.config);
+    const isLoading = useSelector(state => state.waitlist.isLoading);
+    const error = useSelector(state => state.waitlist.error);
+    const dispatch = useDispatch();
+    
+    // Fetch config data when component mounts
+    useEffect(() => {
+        console.log("HostedPreview mounted with waitlistId:", waitlistId);
+        if (waitlistId) {
+            dispatch(fetchWaitlistConfigById(waitlistId));
+        }
+    }, [waitlistId, dispatch]);
+    
+    if (isLoading) {
+        return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    }
+    
+    if (error) {
+        return <div className="flex items-center justify-center h-screen text-red-500">Error: {error}</div>;
+    }
+    
+    return (
+        <ConfigProvider initialConfig={savedConfig}>
+            <Preview />
+        </ConfigProvider>
+    );
+}

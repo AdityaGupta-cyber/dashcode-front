@@ -1,12 +1,12 @@
-
 import { useConfig } from "./contexts/ConfigContext";
 import { Input } from "./ui/input";
 import { Switch } from "./ui/switch";
 import { Separator } from "./ui/separator";
-import { Zap } from "lucide-react";
+import { Palette, Sliders, Type, Brush, Layers } from "lucide-react";
 import { Label } from "./ui/label";
 import { Card } from "./ui/card";
 import { CardContent } from "./ui/card";
+import { Slider } from "./ui/slider";
 
 const DesignPanel = () => {
   const { config, updateConfig } = useConfig();
@@ -14,13 +14,16 @@ const DesignPanel = () => {
   return (
     <Card>
       <CardContent className="pt-6">
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Button Styling */}
           <div className="space-y-4">
-            <h3 className="text-md font-medium">Button Styling</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Sliders className="h-5 w-5 text-indigo-500" />
+              <h3 className="text-lg font-medium">Button Styling</h3>
+            </div>
 
             <div className="space-y-2">
-              <Label htmlFor="buttonBGColor">Button Background Color</Label>
+              <Label htmlFor="buttonBGColor" className="font-medium">Button Background Color</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="buttonBGColor"
@@ -35,10 +38,13 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                The main color for your call-to-action button
+              </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="buttonTextColor">Button Text Color</Label>
+              <Label htmlFor="buttonTextColor" className="font-medium">Button Text Color</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="buttonTextColor"
@@ -53,16 +59,80 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                The color of text inside your button
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg border hover:border-gray-300 transition-colors">
+              <div className="space-y-0.5">
+                <Label htmlFor="buttonTextBold" className="font-medium">Bold Button Text</Label>
+                <p className="text-sm text-gray-500">
+                  Make the button text bold for more emphasis
+                </p>
+              </div>
+              <Switch
+                id="buttonTextBold"
+                checked={config.buttonTextBold === "700"}
+                onCheckedChange={(checked) => updateConfig({ buttonTextBold: checked ? "700" : "400" })}
+              />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="buttonBorderRadius">Button Border Radius</Label>
-              <Input
+              <div className="flex justify-between items-center">
+                <Label htmlFor="buttonBorderRadius" className="font-medium">Button Border Radius</Label>
+                <span className="text-sm text-gray-500">{config.buttonBorderRadius}</span>
+              </div>
+              <Slider
                 id="buttonBorderRadius"
-                value={config.buttonBorderRadius}
-                onChange={(e) => updateConfig({ buttonBorderRadius: e.target.value })}
-                placeholder="0.5rem"
+                min={0}
+                max={20}
+                step={0.5}
+                value={[parseFloat(config.buttonBorderRadius) || 0.5]}
+                onValueChange={(value) => updateConfig({ buttonBorderRadius: `${value[0]}rem` })}
               />
+              <p className="text-sm text-gray-500">
+                Controls how rounded the button corners are
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="buttonBorderColor" className="font-medium">Button Border Color</Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="buttonBorderColor"
+                  type="color"
+                  value={config.buttonBorderColor}
+                  onChange={(e) => updateConfig({ buttonBorderColor: e.target.value })}
+                  className="w-12 h-10 p-1"
+                />
+                <Input
+                  value={config.buttonBorderColor}
+                  onChange={(e) => updateConfig({ buttonBorderColor: e.target.value })}
+                  className="flex-1"
+                />
+              </div>
+              <p className="text-sm text-gray-500">
+                The color of the button border (if width is greater than 0)
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="buttonBorderWidth" className="font-medium">Button Border Width</Label>
+                <span className="text-sm text-gray-500">{config.buttonBorderWidth}</span>
+              </div>
+              <Slider
+                id="buttonBorderWidth"
+                min={0}
+                max={5}
+                step={1}
+                value={[parseInt(config.buttonBorderWidth) || 0]}
+                onValueChange={(value) => updateConfig({ buttonBorderWidth: `${value[0]}px` })}
+              />
+              <p className="text-sm text-gray-500">
+                The thickness of the button border (0 for no border)
+              </p>
             </div>
           </div>
           
@@ -70,10 +140,13 @@ const DesignPanel = () => {
           
           {/* Input Box Styling */}
           <div className="space-y-4">
-            <h3 className="text-md font-medium">Input Box Styling</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Type className="h-5 w-5 text-blue-500" />
+              <h3 className="text-lg font-medium">Input Box Styling</h3>
+            </div>
             
             <div className="space-y-2">
-              <Label htmlFor="inputBoxBGColor">Input Box Background</Label>
+              <Label htmlFor="inputBoxBGColor" className="font-medium">Input Box Background</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="inputBoxBGColor"
@@ -88,10 +161,13 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                The background color of your input fields
+              </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="inputBoxBorderColor">Input Border Color</Label>
+              <Label htmlFor="inputBoxBorderColor" className="font-medium">Input Border Color</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="inputBoxBorderColor"
@@ -106,26 +182,45 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                The color of the border around input fields
+              </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="inputBoxBorderWidth">Input Border Width</Label>
-              <Input
+              <div className="flex justify-between items-center">
+                <Label htmlFor="inputBoxBorderWidth" className="font-medium">Input Border Width</Label>
+                <span className="text-sm text-gray-500">{config.inputBoxBorderWidth}</span>
+              </div>
+              <Slider
                 id="inputBoxBorderWidth"
-                value={config.inputBoxBorderWidth}
-                onChange={(e) => updateConfig({ inputBoxBorderWidth: e.target.value })}
-                placeholder="1px"
+                min={0}
+                max={5}
+                step={1}
+                value={[parseInt(config.inputBoxBorderWidth) || 1]}
+                onValueChange={(value) => updateConfig({ inputBoxBorderWidth: `${value[0]}px` })}
               />
+              <p className="text-sm text-gray-500">
+                The thickness of the input field borders
+              </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="inputBoxBorderRadius">Input Border Radius</Label>
-              <Input
+              <div className="flex justify-between items-center">
+                <Label htmlFor="inputBoxBorderRadius" className="font-medium">Input Border Radius</Label>
+                <span className="text-sm text-gray-500">{config.inputBoxBorderRadius}</span>
+              </div>
+              <Slider
                 id="inputBoxBorderRadius"
-                value={config.inputBoxBorderRadius}
-                onChange={(e) => updateConfig({ inputBoxBorderRadius: e.target.value })}
-                placeholder="0.5rem"
+                min={0}
+                max={20}
+                step={0.5}
+                value={[parseFloat(config.inputBoxBorderRadius) || 0.5]}
+                onValueChange={(value) => updateConfig({ inputBoxBorderRadius: `${value[0]}rem` })}
               />
+              <p className="text-sm text-gray-500">
+                Controls how rounded the input field corners are
+              </p>
             </div>
           </div>
           
@@ -133,10 +228,13 @@ const DesignPanel = () => {
           
           {/* Text Colors */}
           <div className="space-y-4">
-            <h3 className="text-md font-medium">Text Colors</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Palette className="h-5 w-5 text-rose-500" />
+              <h3 className="text-lg font-medium">Text Colors</h3>
+            </div>
             
             <div className="space-y-2">
-              <Label htmlFor="signupTextColor">Text Color</Label>
+              <Label htmlFor="signupTextColor" className="font-medium">Main Text Color</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="signupTextColor"
@@ -151,10 +249,13 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                The primary color for text in your waitlist form
+              </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="pingDotColor">Accent Color</Label>
+              <Label htmlFor="pingDotColor" className="font-medium">Accent Color</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="pingDotColor"
@@ -169,6 +270,9 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                Used for highlights, indicators, and accent elements
+              </p>
             </div>
           </div>
           
@@ -176,10 +280,13 @@ const DesignPanel = () => {
           
           {/* Additional Design Settings */}
           <div className="space-y-4">
-            <h3 className="text-md font-medium">Additional Settings</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Brush className="h-5 w-5 text-amber-500" />
+              <h3 className="text-lg font-medium">Additional Settings</h3>
+            </div>
             
             <div className="space-y-2">
-              <Label htmlFor="refBackgroundColor">Referral Background</Label>
+              <Label htmlFor="refBackgroundColor" className="font-medium">Referral Background</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="refBackgroundColor"
@@ -194,6 +301,23 @@ const DesignPanel = () => {
                   className="flex-1"
                 />
               </div>
+              <p className="text-sm text-gray-500">
+                Background color for the referral screen
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg border hover:border-gray-300 transition-colors">
+              <div className="space-y-0.5">
+                <Label htmlFor="whiteLabel" className="font-medium">White Label</Label>
+                <p className="text-sm text-gray-500">
+                  Remove "Made with ❤️ by Ather" from the footer
+                </p>
+              </div>
+              <Switch
+                id="whiteLabel"
+                checked={config.whiteLabel}
+                onCheckedChange={(checked) => updateConfig({ whiteLabel: checked })}
+              />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Card from "@/components/ui/Card";
 import ImageBlock1 from "@/components/partials/widget/block/image-block-1";
-import GroupChart1 from "@/components/partials/widget/chart/group-chart-1";
+import MainStats from "@/components/partials/widget/chart/group-chart-1";
 import RevenueBarChart from "@/components/partials/widget/chart/revenue-bar-chart";
 import RadialsChart from "@/components/partials/widget/chart/radials";
 import SelectMonth from "@/components/partials/SelectMonth";
@@ -23,7 +23,7 @@ const Dashboard = () => {
         <div className="2xl:col-span-9 lg:col-span-8 col-span-12">
           <Card bodyClass="p-4">
             <div className="grid md:grid-cols-3 col-span-1 gap-4">
-              <GroupChart1 />
+              <MainStats />
             </div>
           </Card>
         </div>
